@@ -188,7 +188,7 @@ function autoBlurAnimationY() {
 }
 autoBlurAnimationY();
 
-// Initialize Swiper
+// Initialize Swiper for home section
 var swiperHome = new Swiper(".swiper", {
   direction: "horizontal",
   slidesPerView: 1,
