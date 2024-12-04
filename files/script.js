@@ -39,9 +39,26 @@ window.addEventListener("scroll", () => {
   lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
 
-// Header script
+//header $ footer loading
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("files/header&Footer/header.html")
+  const currentPath = window.location.pathname;
+  let headerPath = "";
+  let footerPath = "";
+
+  // Define paths for header and footer
+  if (
+    currentPath.includes("services.html") ||
+    currentPath.includes("case.html") ||
+    currentPath.includes("index.html") ||
+    currentPath.includes("contact.html") ||
+    currentPath.endsWith("/")
+  ) {
+    headerPath = "files/header&Footer/header.html";
+    footerPath = "files/header&Footer/footer.html";
+  }
+
+  // Load header
+  fetch(headerPath)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to load header.html");
@@ -50,10 +67,26 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((html) => {
       document.getElementById("header-container").innerHTML = html;
-      headerScript();
+      headerScript(); // Call header-related scripts
+      setActiveNav();
     })
     .catch((error) => {
       console.error("Error loading header:", error);
+    });
+
+  // Load footer
+  fetch(footerPath)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load footer.html");
+      }
+      return response.text();
+    })
+    .then((html) => {
+      document.getElementById("footer-container").innerHTML = html;
+    })
+    .catch((error) => {
+      console.error("Error loading footer:", error);
     });
 });
 
@@ -148,10 +181,27 @@ function headerScript() {
   animateText();
 }
 
+//active nav header
+function setActiveNav() {
+  const currentPage = window.location.pathname.split("/").pop(); // Get the current page's filename (e.g., index.html)
+  const navLinks = document.querySelectorAll("ul li a");
+
+  navLinks.forEach((link) => {
+    const linkHref = link.getAttribute("href").split("/").pop(); // Get the filename part of the href (e.g., index.html)
+
+    // If the link's href matches the current page, add the 'active' class
+    if (currentPage === linkHref) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+}
+
 //tilt for card hover effect
 VanillaTilt.init(
   document.querySelectorAll(
-    ".homeSection2 .styleCards .row .col-md-4 .card, .homeSection2 .parcentageInHome .container .row .col-md-4"
+    ".homeSection2 .styleCards .row .col-md-4 .card, .homeSection2 .parcentageInHome .container .row .col-md-4, .serviceSection1 .card"
   ),
   {
     max: 25,
