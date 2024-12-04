@@ -1044,6 +1044,14 @@ styles for services page starts*/
   justify-content: center;
   gap: 5%;
 }
+
+@media (max-width: 768px) {
+  .universalSection {
+    height: 50vh;
+    background-position: right;
+  }
+}
+
 .universalSection .pathCard,
 .universalSection h1 {
   width: 200px;
